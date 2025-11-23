@@ -11,15 +11,15 @@ app_license = "mit"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "ip_management",
-# 		"logo": "/assets/ip_management/logo.png",
-# 		"title": "IP Management",
-# 		"route": "/ip_management",
-# 		"has_permission": "ip_management.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "ip_management",
+		"logo": "/assets/ip_management/logo.png",
+		"title": "IP Management",
+		"route": "/app/ip-management",
+		"has_permission": "ip_management.api.permission.has_app_permission"
+	}
+]
 
 # Includes in <head>
 # ------------------

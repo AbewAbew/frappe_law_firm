@@ -1,0 +1,80 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">IP Management</span>\",\"col\":12}},{\"id\":\"shortcut_cases\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"IP Cases\",\"col\":3}},{\"id\":\"shortcut_tasks\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"IP Tasks\",\"col\":3}},{\"id\":\"shortcut_status\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Case Statuses\",\"col\":3}},{\"id\":\"shortcut_types\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Request Types\",\"col\":3}},{\"id\":\"shortcut_rules\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Workflow Rules\",\"col\":3}}]",
+ "creation": "2025-11-22 13:35:00",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "solid-info",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "IP Management",
+ "links": [],
+ "modified": "2025-11-22 14:07:13.001745",
+ "modified_by": "Administrator",
+ "module": "IP Management",
+ "name": "IP Management",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "IP Manager"
+  },
+  {
+   "role": "IP Staff"
+  }
+ ],
+ "sequence_id": 3.0,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "IP Cases",
+   "link_to": "IP Case",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "IP Tasks",
+   "link_to": "IP Task",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Case Statuses",
+   "link_to": "IP Case Status",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Request Types",
+   "link_to": "IP Request Type",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Workflow Rules",
+   "link_to": "IP Workflow Rule",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "IP Management"
+}

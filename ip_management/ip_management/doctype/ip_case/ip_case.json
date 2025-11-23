@@ -1,0 +1,128 @@
+{
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "format:IP-CASE-{YYYY}-{#####}",
+    "creation": "2025-11-22 13:25:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "basic_info_section",
+        "ip_case_id",
+        "applicant",
+        "application_number",
+        "trademark_name",
+        "classification_section",
+        "request_type",
+        "case_status",
+        "important_dates_section",
+        "filing_date",
+        "next_notification_date",
+        "history_section",
+        "status_history"
+    ],
+    "fields": [
+        {
+            "fieldname": "basic_info_section",
+            "fieldtype": "Section Break",
+            "label": "Basic Info"
+        },
+        {
+            "fieldname": "ip_case_id",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "IP Case ID",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "applicant",
+            "fieldtype": "Link",
+            "label": "Applicant",
+            "options": "Customer"
+        },
+        {
+            "fieldname": "application_number",
+            "fieldtype": "Data",
+            "label": "Application Number"
+        },
+        {
+            "fieldname": "trademark_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Trademark Name"
+        },
+        {
+            "fieldname": "classification_section",
+            "fieldtype": "Section Break",
+            "label": "Classification"
+        },
+        {
+            "fieldname": "request_type",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Request Type",
+            "options": "IP Request Type"
+        },
+        {
+            "fieldname": "case_status",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Case Status",
+            "options": "IP Case Status"
+        },
+        {
+            "fieldname": "important_dates_section",
+            "fieldtype": "Section Break",
+            "label": "Important Dates"
+        },
+        {
+            "fieldname": "filing_date",
+            "fieldtype": "Date",
+            "label": "Filing Date"
+        },
+        {
+            "fieldname": "next_notification_date",
+            "fieldtype": "Date",
+            "label": "Next Notification Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "history_section",
+            "fieldtype": "Section Break",
+            "label": "History"
+        },
+        {
+            "fieldname": "status_history",
+            "fieldtype": "Table",
+            "label": "Status History",
+            "options": "IP Case History"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-11-22 13:25:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "IP Case",
+    "naming_rule": "Expression",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

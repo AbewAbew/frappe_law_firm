@@ -1,0 +1,92 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "format:RULE-{triggering_status}-{#####}",
+    "creation": "2025-11-22 13:15:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "trigger_section",
+        "triggering_status",
+        "request_type_filter",
+        "action_section",
+        "days_to_deadline",
+        "task_template",
+        "settings_section",
+        "is_active"
+    ],
+    "fields": [
+        {
+            "fieldname": "trigger_section",
+            "fieldtype": "Section Break",
+            "label": "Trigger"
+        },
+        {
+            "fieldname": "triggering_status",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Triggering Status",
+            "options": "IP Case Status",
+            "reqd": 1
+        },
+        {
+            "fieldname": "request_type_filter",
+            "fieldtype": "Link",
+            "label": "Request Type Filter",
+            "options": "IP Request Type"
+        },
+        {
+            "fieldname": "action_section",
+            "fieldtype": "Section Break",
+            "label": "Action"
+        },
+        {
+            "fieldname": "days_to_deadline",
+            "fieldtype": "Int",
+            "in_list_view": 1,
+            "label": "Days to Deadline",
+            "reqd": 1
+        },
+        {
+            "fieldname": "task_template",
+            "fieldtype": "Small Text",
+            "label": "Task Template"
+        },
+        {
+            "fieldname": "settings_section",
+            "fieldtype": "Section Break",
+            "label": "Settings"
+        },
+        {
+            "default": "1",
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Is Active"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-11-22 13:15:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "IP Workflow Rule",
+    "naming_rule": "Expression",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

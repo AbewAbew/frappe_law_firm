@@ -1,0 +1,62 @@
+{
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "field:request_type_name",
+    "creation": "2025-11-22 13:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "request_type_name",
+        "billing_item",
+        "description"
+    ],
+    "fields": [
+        {
+            "fieldname": "request_type_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Request Type Name",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "billing_item",
+            "fieldtype": "Link",
+            "label": "Billing Item",
+            "options": "Item",
+            "description": "The service item to bill for this request type."
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-11-22 13:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "IP Request Type",
+    "naming_rule": "By fieldname",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}
