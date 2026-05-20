@@ -148,23 +148,13 @@ add_to_apps_screen = [
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"ip_management.tasks.all"
-# 	],
-# 	"daily": [
-# 		"ip_management.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"ip_management.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"ip_management.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"ip_management.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"daily": [
+		"ip_management.tasks.daily",
+		"ip_management.ip_management.doctype.ip_case.ip_case.daily_deadline_check"
+	],
+}
+
 
 # Testing
 # -------

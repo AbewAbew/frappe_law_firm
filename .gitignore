@@ -5,3 +5,8 @@
 tags
 node_modules
 __pycache__
+
+# Local bench scratch/verification scripts and generated logs.
+ip_management/debug_log.txt
+ip_management/remove_kyc.py
+ip_management/scripts/

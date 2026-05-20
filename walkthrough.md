@@ -148,3 +148,16 @@ We have installed **Print Designer** to create beautiful documents.
 3.  Select DocType: **IP Case**.
 4.  Use the drag-and-drop editor to design your report (add Logo, Case ID, Status, etc.).
 5.  Save and use this format when printing a case.
+
+## 5. Telegram Notifications
+Receive instant updates on your phone.
+1.  **Start the Bot**: Run `bench telegram start-bot LawFirmBot` in terminal.
+2.  **Connect**: Message the bot on Telegram and log in.
+3.  **Setup Notification**:
+    *   Go to **Notification** list -> New.
+    *   **Subject**: `IP Case Update: {{ name }}`
+    *   **Channel**: Telegram
+    *   **DocType**: IP Case
+    *   **Event**: Value Change (Field: `case_status`)
+    *   **Recipients**: Add yourself (User).
+    *   **Message**: `Status changed to {{ case_status }}`.

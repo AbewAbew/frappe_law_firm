@@ -2,44 +2,284 @@
     "actions": [],
     "allow_import": 1,
     "allow_rename": 1,
-    "autoname": "format:IP-CASE-{YYYY}-{#####}",
     "creation": "2025-11-22 13:25:00.000000",
     "doctype": "DocType",
     "engine": "InnoDB",
     "field_order": [
-        "basic_info_section",
-        "ip_case_id",
-        "applicant",
-        "application_number",
-        "trademark_name",
-        "classification_section",
-        "request_type",
+        "case_type",
+        "case_origin",
+        "column_break_top",
         "case_status",
-        "important_dates_section",
+        "deadline_summary",
+        "recordal_setup_section",
+        "recordal_type",
+        "disputes_setup_section",
+        "dispute_type",
+        "case_origin_section",
+        "source_origin",
+        "linked_ip_case",
+        "initiation_docs_section",
+        "initiation_documents",
+        "instruction_document",
+        "poa_initiation_document",
+        "other_supporting_document",
+        "basic_info_section",
+        "trademark_owner",
+        "owner_country",
+        "owner_address",
+        "local_agent",
+        "local_agent_email",
+        "foreign_law_firm_section",
+        "applicant",
+        "contact_person",
+        "firm_email",
+        "client_reference_number",
+        "firm_reference_number",
+        "trademark_details_section",
+        "trademark_name",
+        "trademark_type",
+        "trademark_representation",
+        "classes",
+        "goods_description",
+        "transliteration",
+        "color_claimed",
+        "color_description",
+        "priority_claimed",
+        "priority_section",
+        "priority_country",
+        "priority_application_number",
+        "priority_date",
+        "column_break_priority",
+        "priority_doc_filed",
+        "priority_document_deadline",
+        "priority_certified_copy",
+        "translation_required",
+        "priority_translation_document",
+        "assignment_section",
+        "new_owner",
+        "new_owner_address",
+        "deed_of_assignment_date",
+        "transfer_scope",
+        "with_goodwill",
+        "assignment_document",
+        "license_section",
+        "licensee",
+        "license_type",
+        "license_effective_date",
+        "license_expiry_date",
+        "quality_control",
+        "license_agreement_doc",
+        "change_name_address_section",
+        "change_type",
+        "new_value",
+        "proof_document",
+        "renunciation_section",
+        "surrender_scope",
+        "classes_to_remove",
+        "licensee_consent",
+        "disputes_section",
+        "requestor_name",
+        "grounds",
+        "defense_deadline",
+        "recordal_filing_section",
         "filing_date",
-        "next_notification_date",
+        "official_receipt_no",
+        "official_fee_paid",
+        "proof_of_filing_recordal",
+        "create_recordal_filing_invoice",
+        "recordal_registration_section",
+        "decision_outcome",
+        "recordal_registration_date",
+        "new_certificate",
+        "system_action_update_master",
+        "recordal_publication_section",
+        "publication_date",
+        "gazette_reference",
+        "advertisement_copy",
+        "create_recordal_publication_invoice",
+        "filing_section",
+        "original_application_date",
+        "current_expiration_date",
+        "application_date",
+        "application_number",
+        "proof_of_filing",
+        "filing_receipt",
+        "create_filing_invoice",
+        "office_action_section",
+        "office_actions",
+        "advertisement_section",
+        "advertisement_published",
+        "advertisement_date",
+        "advertisement_date",
+        "advertisement_document",
+        "create_publication_invoice",
+        "column_break_advert",
+        "opposition_period_start",
+        "opposition_period_end",
+        "opposition_filed",
+        "opposition_details",
+        "opposition_document",
+        "opposition_deadline_extended",
+        "registration_section",
+        "registration_fee_due_date",
+        "registration_fee_deadline",
+        "payment_amount_etb",
+        "payment_date",
+        "column_break_reg",
+        "receipt_document",
+        "certificate_section",
+        "registration_number",
+        "certificate_issued_date",
+        "non_use_cancellation_date",
+        "renewal_date_display",
+        "certificate_received_date",
+        "certificate_sent_date",
+        "column_break_cert",
+        "certificate_document",
+        "create_certificate_invoice",
+        "certificate_document",
+        "renewal_section",
+        "original_registration_number",
+        "renewal_due_date",
+        "next_renewal_date",
+        "reminder_needed",
+        "column_break_renewal",
+        "renewal_filed_date",
+        "renewal_uploaded",
+        "renewal_sent_to_contact",
+        "poa_section",
+        "poa_status",
+        "poa_document",
+        "final_status_section",
+        "notes",
         "history_section",
         "status_history"
     ],
     "fields": [
         {
+            "default": "New Trademark",
+            "fieldname": "case_type",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Case Type",
+            "options": "New Trademark\nTrademark Renewal\nRecordals\nDisputes & Surrenders",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_top",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "International",
+            "fieldname": "case_origin",
+            "fieldtype": "Select",
+            "label": "Case Origin",
+            "options": "National\nInternational\nInternal"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_setup_section",
+            "fieldtype": "Section Break",
+            "label": "Recordal Setup"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Disputes & Surrenders'",
+            "fieldname": "disputes_setup_section",
+            "fieldtype": "Section Break",
+            "label": "Disputes & Surrenders Setup"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Disputes & Surrenders'",
+            "fieldname": "dispute_type",
+            "fieldtype": "Select",
+            "label": "Dispute / Surrender Type",
+            "options": "Renunciation (Surrender)\nInvalidation Action\nCancellation (Non-Use)"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_type",
+            "fieldtype": "Select",
+            "label": "Recordal Type",
+            "options": "Assignment (Transfer)\nLicense Agreement\nChange of Name\nChange of Address\nMerger"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' || doc.case_type == 'Disputes & Surrenders' || doc.case_type == 'Trademark Renewal'",
+            "fieldname": "case_origin_section",
+            "fieldtype": "Section Break",
+            "label": "Case Origin Details"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' || doc.case_type == 'Disputes & Surrenders' || doc.case_type == 'Trademark Renewal'",
+            "fieldname": "source_origin",
+            "fieldtype": "Select",
+            "label": "Source Origin",
+            "options": "Internal\nExternal"
+        },
+        {
+            "depends_on": "eval:(doc.case_type == 'Recordals' || doc.case_type == 'Disputes & Surrenders' || doc.case_type == 'Trademark Renewal') && doc.source_origin == 'Internal'",
+            "fieldname": "linked_ip_case",
+            "fieldtype": "Link",
+            "label": "Linked IP Case",
+            "options": "IP Case"
+        },
+        {
+            "fieldname": "initiation_docs_section",
+            "fieldtype": "Section Break",
+            "label": "Case Initiation Documents"
+        },
+        {
+            "fieldname": "instruction_document",
+            "fieldtype": "Attach",
+            "hidden": 1,
+            "label": "Instruction Document (Deprecated)"
+        },
+        {
+            "fieldname": "poa_initiation_document",
+            "fieldtype": "Attach",
+            "hidden": 1,
+            "label": "Power of Attorney (Deprecated)"
+        },
+        {
+            "fieldname": "other_supporting_document",
+            "fieldtype": "Attach",
+            "hidden": 1,
+            "label": "Other Supporting Documents (Deprecated)"
+        },
+        {
+            "fieldname": "initiation_documents",
+            "fieldtype": "Table",
+            "label": "Initiation Documents",
+            "options": "IP Supporting Document"
+        },
+        {
             "fieldname": "basic_info_section",
             "fieldtype": "Section Break",
-            "label": "Basic Info"
+            "label": "Basic Information"
         },
         {
-            "fieldname": "ip_case_id",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "IP Case ID",
-            "reqd": 1,
-            "unique": 1
+            "fieldname": "foreign_law_firm_section",
+            "fieldtype": "Section Break",
+            "label": "Foreign Law Firm (International Only)",
+            "collapsible": 1
         },
         {
-            "fieldname": "applicant",
-            "fieldtype": "Link",
-            "label": "Applicant",
-            "options": "Customer"
+            "collapsible": 1,
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "filing_section",
+            "fieldtype": "Section Break",
+            "label": "Filing"
+        },
+        {
+            "fieldname": "original_application_date",
+            "fieldtype": "Date",
+            "hidden": 1,
+            "label": "Original Application Date"
+        },
+        {
+            "fieldname": "current_expiration_date",
+            "fieldtype": "Date",
+            "hidden": 1,
+            "label": "Current Expiration Date"
         },
         {
             "fieldname": "application_number",
@@ -47,61 +287,774 @@
             "label": "Application Number"
         },
         {
-            "fieldname": "trademark_name",
+            "fieldname": "proof_of_filing",
+            "fieldtype": "Attach",
+            "label": "Proof of Filing"
+        },
+        {
+            "fieldname": "application_date",
+            "fieldtype": "Date",
+            "label": "Application Date"
+        },
+        {
+            "fieldname": "filing_receipt",
+            "fieldtype": "Attach",
+            "label": "Receipt Upload"
+        },
+        {
+            "fieldname": "trademark_owner",
+            "fieldtype": "Link",
+            "label": "Trademark Owner",
+            "options": "Trademark Owner"
+        },
+        {
+            "fetch_from": "trademark_owner.nationality",
+            "fieldname": "owner_country",
             "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Trademark Name"
+            "label": "Owner Country",
+            "read_only": 1
         },
         {
-            "fieldname": "classification_section",
-            "fieldtype": "Section Break",
-            "label": "Classification"
+            "fetch_from": "trademark_owner.full_address",
+            "fieldname": "owner_address",
+            "fieldtype": "Small Text",
+            "label": "Owner Address",
+            "read_only": 1
         },
         {
-            "fieldname": "request_type",
+            "fieldname": "create_filing_invoice",
+            "fieldtype": "Button",
+            "label": "Create Filing Invoice"
+        },
+        {
+            "fieldname": "applicant",
             "fieldtype": "Link",
             "in_list_view": 1,
-            "label": "Request Type",
-            "options": "IP Request Type"
+            "label": "Firm Name / Payer",
+            "options": "Customer"
+        },
+        {
+            "fieldname": "local_agent",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Case Lead",
+            "options": "User"
+        },
+        {
+            "fetch_from": "local_agent.email",
+            "fieldname": "local_agent_email",
+            "fieldtype": "Data",
+            "label": "Case Lead Email",
+            "read_only": 1
         },
         {
             "fieldname": "case_status",
             "fieldtype": "Link",
             "in_list_view": 1,
             "label": "Case Status",
-            "options": "IP Case Status"
+            "options": "IP Case Status",
+            "read_only": 1
         },
         {
-            "fieldname": "important_dates_section",
-            "fieldtype": "Section Break",
-            "label": "Important Dates"
+            "fieldname": "deadline_summary",
+            "fieldtype": "HTML",
+            "label": "Deadline Summary",
+            "read_only": 1
         },
         {
-            "fieldname": "filing_date",
-            "fieldtype": "Date",
-            "label": "Filing Date"
+            "fieldname": "column_break_basic",
+            "fieldtype": "Column Break"
         },
         {
             "fieldname": "next_notification_date",
             "fieldtype": "Date",
-            "label": "Next Notification Date",
+            "label": "Next Deadline",
             "read_only": 1
         },
         {
+            "fetch_from": "applicant.customer_primary_contact",
+            "fieldname": "contact_person",
+            "fieldtype": "Data",
+            "label": "Contact Person",
+            "read_only": 1
+        },
+        {
+            "fieldname": "firm_email",
+            "fieldtype": "Data",
+            "label": "Email",
+            "options": "Email",
+            "read_only": 1
+        },
+        {
+            "fieldname": "firm_reference_number",
+            "fieldtype": "Data",
+            "label": "Firm Reference Number"
+        },
+        {
+            "fieldname": "client_reference_number",
+            "fieldtype": "Data",
+            "label": "Client Reference Number"
+        },
+        {
+            "fieldname": "trademark_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Trademark Name / Mark"
+        },
+        {
+            "fieldname": "trademark_type",
+            "fieldtype": "Select",
+            "label": "Type",
+            "options": "Word Mark\nDevice / Logo (Figurative)\nCombined (Word + Device)\nCollective Trademark\n3D Shape"
+        },
+        {
+            "fieldname": "trademark_representation",
+            "fieldtype": "Attach",
+            "label": "Trademark Representation / Logo"
+        },
+        {
+            "fieldname": "classes",
+            "fieldtype": "Data",
+            "label": "Class(es)"
+        },
+        {
+            "fieldname": "goods_description",
+            "fieldtype": "Small Text",
+            "label": "Description of Goods/Services"
+        },
+        {
+            "fieldname": "trademark_details_section",
+            "fieldtype": "Section Break",
+            "label": "Trademark Details"
+        },
+        {
+            "fieldname": "transliteration",
+            "fieldtype": "Small Text",
+            "label": "Transliteration / Translation"
+        },
+        {
+            "default": "0",
+            "fieldname": "color_claimed",
+            "fieldtype": "Check",
+            "label": "Color Claimed?"
+        },
+        {
+            "depends_on": "eval:doc.color_claimed",
+            "fieldname": "color_description",
+            "fieldtype": "Small Text",
+            "label": "Color Description",
+            "mandatory_depends_on": "eval:doc.color_claimed"
+        },
+        {
+            "default": "0",
+            "fieldname": "priority_claimed",
+            "fieldtype": "Check",
+            "label": "Priority Claimed"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_section",
+            "fieldtype": "Section Break",
+            "label": "Priority Claim"
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_country",
+            "fieldtype": "Link",
+            "label": "Priority Country",
+            "options": "Country"
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_application_number",
+            "fieldtype": "Data",
+            "label": "Priority Application No."
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_date",
+            "fieldtype": "Date",
+            "label": "Priority Date"
+        },
+        {
+            "fieldname": "column_break_priority",
+            "fieldtype": "Column Break"
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_doc_filed",
+            "fieldtype": "Check",
+            "label": "Priority Document Filed?"
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_document_deadline",
+            "fieldtype": "Date",
+            "label": "Priority Doc. Deadline",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "priority_certified_copy",
+            "fieldtype": "Attach",
+            "label": "Attachment: Certified Copy"
+        },
+        {
+            "default": "0",
+            "depends_on": "eval:doc.priority_claimed",
+            "fieldname": "translation_required",
+            "fieldtype": "Check",
+            "label": "Translation Required?"
+        },
+        {
+            "depends_on": "eval:doc.translation_required",
+            "fieldname": "priority_translation_document",
+            "fieldtype": "Attach",
+            "label": "Attachment: Translation"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.case_type == 'New Trademark'",
+            "fieldname": "office_action_section",
+            "fieldtype": "Section Break",
+            "label": "Office Actions"
+        },
+        {
+            "fieldname": "office_actions",
+            "fieldtype": "Table",
+            "label": "Office Actions",
+            "options": "IP Office Action"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "advertisement_section",
+            "fieldtype": "Section Break",
+            "label": "Advertisement Stage"
+        },
+        {
+            "default": "0",
+            "fieldname": "advertisement_published",
+            "fieldtype": "Check",
+            "label": "Advertisement Published"
+        },
+        {
+            "depends_on": "eval:doc.advertisement_published",
+            "fieldname": "advertisement_date",
+            "fieldtype": "Date",
+            "label": "Advertisement Date"
+        },
+        {
+            "depends_on": "eval:doc.advertisement_published",
+            "fieldname": "advertisement_document",
+            "fieldtype": "Attach",
+            "label": "Advertisement Upload"
+        },
+        {
+            "fieldname": "create_publication_invoice",
+            "fieldtype": "Button",
+            "label": "Create Publication Invoice"
+        },
+        {
+            "fieldname": "column_break_advert",
+            "fieldtype": "Column Break"
+        },
+        {
+            "depends_on": "eval:doc.advertisement_published",
+            "fieldname": "opposition_period_start",
+            "fieldtype": "Date",
+            "label": "Opposition Period Start"
+        },
+        {
+            "depends_on": "eval:doc.advertisement_published",
+            "fieldname": "opposition_period_end",
+            "fieldtype": "Date",
+            "label": "Opposition Period End"
+        },
+        {
+            "default": "0",
+            "depends_on": "eval:doc.advertisement_published",
+            "fieldname": "opposition_filed",
+            "fieldtype": "Check",
+            "label": "Opposition Filed"
+        },
+        {
+            "depends_on": "eval:doc.opposition_filed",
+            "fieldname": "opposition_details",
+            "fieldtype": "Small Text",
+            "label": "Opposition Details"
+        },
+        {
+            "depends_on": "eval:doc.opposition_filed",
+            "fieldname": "opposition_document",
+            "fieldtype": "Attach",
+            "label": "Opposition Document"
+        },
+        {
+            "depends_on": "eval:doc.opposition_filed",
+            "fieldname": "opposition_deadline_extended",
+            "fieldtype": "Date",
+            "label": "Extended Opposition Deadline"
+        },
+        {
+            "collapsible": 1,
+            "fieldname": "registration_section",
+            "fieldtype": "Section Break",
+            "label": "Registration Fee Payment"
+        },
+        {
+            "fieldname": "registration_fee_due_date",
+            "fieldtype": "Date",
+            "label": "Registration Fee Due"
+        },
+        {
+            "fieldname": "registration_fee_deadline",
+            "fieldtype": "Date",
+            "label": "Registration Fee Deadline",
+            "read_only": 1
+        },
+        {
+            "fieldname": "payment_amount_etb",
+            "fieldtype": "Currency",
+            "label": "Payment Amount (ETB)"
+        },
+        {
+            "fieldname": "payment_date",
+            "fieldtype": "Date",
+            "label": "Payment Date"
+        },
+        {
+            "fieldname": "column_break_reg",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "receipt_document",
+            "fieldtype": "Attach",
+            "label": "Receipt Upload"
+        },
+        {
+            "fieldname": "create_certificate_invoice",
+            "fieldtype": "Button",
+            "label": "Create Certificate Invoice"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "certificate_section",
+            "fieldtype": "Section Break",
+            "label": "Certificate"
+        },
+        {
+            "fieldname": "registration_number",
+            "fieldtype": "Data",
+            "label": "Registration Number"
+        },
+        {
+            "fieldname": "certificate_issued_date",
+            "fieldtype": "Date",
+            "label": "Certificate Issued Date"
+        },
+        {
+            "fieldname": "non_use_cancellation_date",
+            "fieldtype": "Date",
+            "label": "Non-Use Vulnerability Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "renewal_date_display",
+            "fieldtype": "Date",
+            "label": "Renewal Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "certificate_received_date",
+            "fieldtype": "Date",
+            "label": "Certificate Received By Us"
+        },
+        {
+            "fieldname": "certificate_sent_date",
+            "fieldtype": "Date",
+            "label": "Certificate Sent to Applicant/Firm"
+        },
+        {
+            "fieldname": "column_break_cert",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "certificate_document",
+            "fieldtype": "Attach",
+            "label": "Copy of Certificate"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.case_type == 'Trademark Renewal'",
+            "fieldname": "renewal_section",
+            "fieldtype": "Section Break",
+            "label": "Next Renewal Date"
+        },
+        {
+            "fieldname": "original_case",
+            "fieldtype": "Link",
+            "label": "Original Case / Previous Registration",
+            "options": "IP Case",
+            "depends_on": "eval:doc.case_origin == 'Internal'",
+            "hidden": 1
+        },
+        {
+            "fieldname": "late_renewal_status",
+            "fieldtype": "Data",
+            "label": "Late Renewal Status",
+            "read_only": 1,
+            "hidden": 1
+        },
+        {
+            "fieldname": "original_registration_number",
+            "fieldtype": "Data",
+            "label": "Registration Number",
+            "hidden": 1
+        },
+        {
+            "fieldname": "renewal_due_date",
+            "fieldtype": "Date",
+            "label": "Renewal Due Date",
+            "hidden": 1
+        },
+        {
+            "fieldname": "next_renewal_date",
+            "fieldtype": "Date",
+            "label": "Next Renewal Date",
+            "read_only": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "reminder_needed",
+            "fieldtype": "Check",
+            "label": "Reminder Needed",
+            "hidden": 1
+        },
+        {
+            "fieldname": "column_break_renewal",
+            "fieldtype": "Column Break",
+            "hidden": 1
+        },
+        {
+            "fieldname": "renewal_filed_date",
+            "fieldtype": "Date",
+            "label": "Renewal Application Filed Date",
+            "hidden": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "renewal_uploaded",
+            "fieldtype": "Check",
+            "label": "Renewal Uploaded in System",
+            "hidden": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "renewal_sent_to_contact",
+            "fieldtype": "Check",
+            "label": "Renewal Sent to Contact Person",
+            "hidden": 1
+        },
+        {
+            "collapsible": 1,
+            "hidden": 1,
+            "fieldname": "poa_section",
+            "fieldtype": "Section Break",
+            "label": "Power of Attorney (POA)"
+        },
+        {
+            "fieldname": "poa_status",
+            "fieldtype": "Select",
+            "label": "POA Status",
+            "options": "\nNew\nAlready in File"
+        },
+        {
+            "fieldname": "poa_document",
+            "fieldtype": "Attach",
+            "label": "POA Document"
+        },
+        {
+            "collapsible": 1,
+            "fieldname": "final_status_section",
+            "fieldtype": "Section Break",
+            "label": "Final Status & Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Text Editor",
+            "label": "Notes / Additional Actions"
+        },
+        {
+            "collapsible": 1,
             "fieldname": "history_section",
             "fieldtype": "Section Break",
-            "label": "History"
+            "label": "Status History"
         },
         {
             "fieldname": "status_history",
             "fieldtype": "Table",
             "label": "Status History",
             "options": "IP Case History"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "assignment_section",
+            "fieldtype": "Section Break",
+            "label": "Assignment Details"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "new_owner",
+            "fieldtype": "Link",
+            "label": "New Owner",
+            "options": "Trademark Owner"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "new_owner_address",
+            "fieldtype": "Small Text",
+            "label": "New Owner Address"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "deed_of_assignment_date",
+            "fieldtype": "Date",
+            "label": "Deed of Assignment Date"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "transfer_scope",
+            "fieldtype": "Select",
+            "label": "Transfer Scope",
+            "options": "Full (All Classes)\nPartial"
+        },
+        {
+            "default": "0",
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "with_goodwill",
+            "fieldtype": "Check",
+            "label": "With Goodwill?"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Assignment (Transfer)'",
+            "fieldname": "assignment_document",
+            "fieldtype": "Attach",
+            "label": "Deed of Assignment & POA"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.recordal_type == 'License Agreement'",
+            "fieldname": "license_section",
+            "fieldtype": "Section Break",
+            "label": "License Agreement"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "licensee",
+            "fieldtype": "Link",
+            "label": "Licensee",
+            "options": "Customer"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "license_type",
+            "fieldtype": "Select",
+            "label": "License Type",
+            "options": "Exclusive\nNon-Exclusive"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "license_effective_date",
+            "fieldtype": "Date",
+            "label": "Effective Date"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "license_expiry_date",
+            "fieldtype": "Date",
+            "label": "Expiry Date"
+        },
+        {
+            "default": "0",
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "quality_control",
+            "fieldtype": "Check",
+            "label": "Quality Control Clause?"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'License Agreement'",
+            "fieldname": "license_agreement_doc",
+            "fieldtype": "Attach",
+            "label": "License Agreement"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && (doc.recordal_type == 'Change of Name' || doc.recordal_type == 'Change of Address')",
+            "fieldname": "change_name_address_section",
+            "fieldtype": "Section Break",
+            "label": "Change Details"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Change of Name' || doc.recordal_type == 'Change of Address'",
+            "fieldname": "new_value",
+            "fieldtype": "Data",
+            "label": "New Value"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Change of Name' || doc.recordal_type == 'Change of Address'",
+            "fieldname": "proof_document",
+            "fieldtype": "Attach",
+            "label": "Proof Document"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Disputes & Surrenders' && doc.dispute_type == 'Renunciation (Surrender)'",
+            "fieldname": "renunciation_section",
+            "fieldtype": "Section Break",
+            "label": "Renunciation Details"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Renunciation (Surrender)'",
+            "fieldname": "surrender_scope",
+            "fieldtype": "Select",
+            "label": "Scope",
+            "options": "Total Surrender\nPartial Surrender"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Renunciation (Surrender)' && doc.surrender_scope == 'Partial Surrender'",
+            "fieldname": "classes_to_remove",
+            "fieldtype": "Data",
+            "label": "Classes to Remove"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Renunciation (Surrender)'",
+            "fieldname": "licensee_consent",
+            "fieldtype": "Attach",
+            "label": "Licensee Consent"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Disputes & Surrenders' && (doc.dispute_type == 'Invalidation Action' || doc.dispute_type == 'Cancellation (Non-Use)')",
+            "fieldname": "disputes_section",
+            "fieldtype": "Section Break",
+            "label": "Dispute Details"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Invalidation Action' || doc.dispute_type == 'Cancellation (Non-Use)'",
+            "fieldname": "requestor_name",
+            "fieldtype": "Data",
+            "label": "Requestor Name"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Invalidation Action' || doc.dispute_type == 'Cancellation (Non-Use)'",
+            "fieldname": "grounds",
+            "fieldtype": "Text",
+            "label": "Grounds"
+        },
+        {
+            "depends_on": "eval:doc.dispute_type == 'Invalidation Action' || doc.dispute_type == 'Cancellation (Non-Use)'",
+            "fieldname": "defense_deadline",
+            "fieldtype": "Date",
+            "label": "Defense Deadline"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_filing_section",
+            "fieldtype": "Section Break",
+            "label": "Filing (Recordal)"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "filing_date",
+            "fieldtype": "Date",
+            "label": "Filing Date"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "official_receipt_no",
+            "fieldtype": "Data",
+            "label": "Official Receipt No"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "official_fee_paid",
+            "fieldtype": "Currency",
+            "label": "Official Fee Paid"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "proof_of_filing_recordal",
+            "fieldtype": "Attach",
+            "label": "Proof of Filing"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_registration_section",
+            "fieldtype": "Section Break",
+            "label": "Registration (Recordal)"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "decision_outcome",
+            "fieldtype": "Select",
+            "label": "Decision Outcome",
+            "options": "Pending\nApproved\nRefused\nWithdrawn"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_registration_date",
+            "fieldtype": "Date",
+            "label": "Registration Date"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "new_certificate",
+            "fieldtype": "Attach",
+            "label": "New Certificate"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.source_origin == 'Internal' && doc.decision_outcome == 'Approved'",
+            "fieldname": "system_action_update_master",
+            "fieldtype": "Button",
+            "label": "Update Master IP Case"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "recordal_publication_section",
+            "fieldtype": "Section Break",
+            "label": "Publication (Recordal)"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "publication_date",
+            "fieldtype": "Date",
+            "label": "Publication Date"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "gazette_reference",
+            "fieldtype": "Data",
+            "label": "Gazette Reference"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "advertisement_copy",
+            "fieldtype": "Attach",
+            "label": "Advertisement Copy"
+        },
+        {
+            "fieldname": "create_recordal_filing_invoice",
+            "fieldtype": "Button",
+            "label": "Create Recordal Filing Invoice"
+        },
+        {
+            "fieldname": "create_recordal_publication_invoice",
+            "fieldtype": "Button",
+            "label": "Create Recordal Publication Invoice"
         }
     ],
     "index_web_pages_for_search": 1,
     "links": [],
-    "modified": "2025-11-22 13:25:00.000000",
+    "modified": "2025-12-08 12:40:00.000000",
     "modified_by": "Administrator",
     "module": "IP Management",
     "name": "IP Case",

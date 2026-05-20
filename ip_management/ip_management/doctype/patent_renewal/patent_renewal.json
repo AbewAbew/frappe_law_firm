@@ -1,0 +1,67 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "creation": "2025-12-17 10:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "year_number",
+        "due_date",
+        "amount",
+        "payment_status",
+        "surcharge_applied",
+        "official_receipt_no"
+    ],
+    "fields": [
+        {
+            "fieldname": "year_number",
+            "fieldtype": "Int",
+            "in_list_view": 1,
+            "label": "Year Number",
+            "reqd": 1
+        },
+        {
+            "fieldname": "due_date",
+            "fieldtype": "Date",
+            "in_list_view": 1,
+            "label": "Due Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "amount",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Amount"
+        },
+        {
+            "fieldname": "payment_status",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Payment Status",
+            "options": "Pending\nPaid\nOverdue"
+        },
+        {
+            "default": "0",
+            "fieldname": "surcharge_applied",
+            "fieldtype": "Check",
+            "label": "Surcharge Applied?"
+        },
+        {
+            "fieldname": "official_receipt_no",
+            "fieldtype": "Data",
+            "label": "Official Receipt No"
+        }
+    ],
+    "istable": 1,
+    "links": [],
+    "modified": "2025-12-17 10:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "Patent Renewal",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

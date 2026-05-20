@@ -1,0 +1,126 @@
+{
+    "actions": [],
+    "creation": "2025-12-08 12:38:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "office_action_date",
+        "action_type",
+        "office_action_copy",
+        "column_break_1",
+        "response_deadline",
+        "extension_count",
+        "extend_deadline",
+        "extension_request_document",
+        "extension_decision_document",
+        "extension_receipt_document",
+        "response_section",
+        "response_filed",
+        "response_date",
+        "column_break_2",
+        "response_document",
+        "outcome"
+    ],
+    "fields": [
+        {
+            "fieldname": "office_action_date",
+            "fieldtype": "Date",
+            "in_list_view": 1,
+            "label": "Office Action Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "action_type",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Type"
+        },
+        {
+            "fieldname": "office_action_copy",
+            "fieldtype": "Attach",
+            "label": "Office Action Copy"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "response_deadline",
+            "fieldtype": "Date",
+            "label": "Response Deadline"
+        },
+        {
+            "default": "0",
+            "fieldname": "extension_count",
+            "fieldtype": "Int",
+            "in_list_view": 1,
+            "label": "Extensions Used",
+            "read_only": 1
+        },
+        {
+            "fieldname": "extend_deadline",
+            "fieldtype": "Button",
+            "label": "Extend Deadline"
+        },
+        {
+            "fieldname": "extension_request_document",
+            "fieldtype": "Attach",
+            "label": "Extension Request"
+        },
+        {
+            "fieldname": "extension_decision_document",
+            "fieldtype": "Attach",
+            "label": "Extension Decision"
+        },
+        {
+            "fieldname": "extension_receipt_document",
+            "fieldtype": "Attach",
+            "label": "Extension Receipt"
+        },
+        {
+            "fieldname": "response_section",
+            "fieldtype": "Section Break",
+            "label": "Response"
+        },
+        {
+            "default": "0",
+            "fieldname": "response_filed",
+            "fieldtype": "Check",
+            "in_list_view": 1,
+            "label": "Response Filed"
+        },
+        {
+            "depends_on": "eval:doc.response_filed",
+            "fieldname": "response_date",
+            "fieldtype": "Date",
+            "label": "Response Date"
+        },
+        {
+            "fieldname": "column_break_2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "response_document",
+            "fieldtype": "Attach",
+            "label": "Response Document"
+        },
+        {
+            "fieldname": "outcome",
+            "fieldtype": "Select",
+            "label": "Outcome",
+            "options": "Pending Decision\nObjection Overcome (Accepted)\nRefusal Maintained (Rejected)\nAbandoned"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "istable": 1,
+    "links": [],
+    "modified": "2025-12-08 12:38:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "IP Office Action",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

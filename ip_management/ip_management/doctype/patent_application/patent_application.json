@@ -1,0 +1,477 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2025-12-17 10:20:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "overview_tab",
+  "application_type",
+  "title_of_invention",
+  "applicant_is_inventor",
+  "column_break_1",
+  "filing_date",
+  "status",
+  "naming_series",
+  "section_break_1",
+  "client",
+  "ipc_code",
+  "column_break_2",
+  "agent_lawyer",
+  "abstract",
+  "applicants_tab",
+  "section_applicants",
+  "applicants",
+  "section_inventors",
+  "inventors",
+  "priority_tab",
+  "claiming_priority",
+  "priority_deadline",
+  "section_foreign_intro",
+  "foreign_app_number",
+  "original_patent_source",
+  "priorities_section",
+  "priorities",
+  "foreign_docs_submitted",
+  "spec_tab",
+  "description_file",
+  "claims_file",
+  "drawings_file",
+  "column_break_spec",
+  "abstract_file",
+  "power_of_attorney",
+  "id_specifics_section",
+  "specimen_submitted",
+  "graphic_representations",
+  "product_class",
+  "exam_tab",
+  "formal_exam_date",
+  "correction_deadline",
+  "substantive_exam_date",
+  "column_break_exam",
+  "examiner_name",
+  "search_report_recd",
+  "publication_section",
+  "publication_date",
+  "gazette_reference",
+  "grant_section",
+  "grant_date",
+  "patent_duration",
+  "expiration_date",
+  "fees_tab",
+  "filing_fee_paid",
+  "recipet",
+  "examination_fee_paid",
+  "recipet_examination",
+  "column_break_fees",
+  "grant_fee_paid",
+  "recipet_grant",
+  "annuities_section",
+  "annuity_start_date",
+  "renewals",
+  "legal_tab",
+  "transfer_assignment_section",
+  "court_proceedings"
+ ],
+ "fields": [
+  {
+   "fieldname": "overview_tab",
+   "fieldtype": "Tab Break",
+   "label": "Overview & Filing"
+  },
+  {
+   "fieldname": "application_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Application Type",
+   "options": "\nPatent of Invention\nUtility Model\nIndustrial Design\nPatent of Introduction",
+   "reqd": 1
+  },
+  {
+   "fieldname": "title_of_invention",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title of Invention",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "applicant_is_inventor",
+   "fieldtype": "Check",
+   "label": "Applicant is Inventor?"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "filing_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Filing Date",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nFiled\nFormal Exam\nSubstantive Exam\nPublished\nGranted\nRefused\nWithdrawn\nSurrendered\nExpired",
+   "read_only": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Naming Series"
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "label": "Client",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "ipc_code",
+   "fieldtype": "Data",
+   "label": "IPC Code"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "agent_lawyer",
+   "fieldtype": "Link",
+   "label": "Agent / Lawyer",
+   "options": "User"
+  },
+  {
+   "fieldname": "abstract",
+   "fieldtype": "Small Text",
+   "label": "Abstract"
+  },
+  {
+   "fieldname": "applicants_tab",
+   "fieldtype": "Tab Break",
+   "label": "Applicants & Inventors"
+  },
+  {
+   "fieldname": "section_applicants",
+   "fieldtype": "Section Break",
+   "label": "Applicant Details"
+  },
+  {
+   "fieldname": "applicants",
+   "fieldtype": "Table",
+   "label": "Applicants",
+   "options": "Patent Applicant"
+  },
+  {
+   "depends_on": "eval:!doc.applicant_is_inventor",
+   "fieldname": "section_inventors",
+   "fieldtype": "Section Break",
+   "label": "Inventor Details"
+  },
+  {
+   "depends_on": "eval:!doc.applicant_is_inventor",
+   "fieldname": "inventors",
+   "fieldtype": "Table",
+   "label": "Inventors",
+   "options": "Patent Inventor"
+  },
+  {
+   "fieldname": "priority_tab",
+   "fieldtype": "Tab Break",
+   "label": "Priority & Foreign Data"
+  },
+  {
+   "default": "0",
+   "fieldname": "claiming_priority",
+   "fieldtype": "Check",
+   "label": "Claiming Priority?"
+  },
+  {
+   "fieldname": "priority_deadline",
+   "fieldtype": "Date",
+   "label": "Priority Deadline",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.application_type=='Patent of Introduction'",
+   "fieldname": "section_foreign_intro",
+   "fieldtype": "Section Break",
+   "label": "Patent of Introduction"
+  },
+  {
+   "depends_on": "eval:doc.application_type=='Patent of Introduction'",
+   "fieldname": "foreign_app_number",
+   "fieldtype": "Data",
+   "label": "Foreign App Number"
+  },
+  {
+   "depends_on": "eval:doc.application_type=='Patent of Introduction'",
+   "fieldname": "original_patent_source",
+   "fieldtype": "Data",
+   "label": "Original Patent Source"
+  },
+  {
+   "fieldname": "priorities_section",
+   "fieldtype": "Section Break",
+   "label": "Priorities"
+  },
+  {
+   "fieldname": "priorities",
+   "fieldtype": "Table",
+   "label": "Priorities",
+   "options": "Priority Claim"
+  },
+  {
+   "default": "0",
+   "fieldname": "foreign_docs_submitted",
+   "fieldtype": "Check",
+   "label": "Foreign Docs Submitted"
+  },
+  {
+   "fieldname": "spec_tab",
+   "fieldtype": "Tab Break",
+   "label": "Technical Specification"
+  },
+  {
+   "fieldname": "description_file",
+   "fieldtype": "Attach",
+   "label": "Description File"
+  },
+  {
+   "fieldname": "claims_file",
+   "fieldtype": "Attach",
+   "label": "Claims File"
+  },
+  {
+   "fieldname": "drawings_file",
+   "fieldtype": "Attach",
+   "label": "Drawings File"
+  },
+  {
+   "fieldname": "column_break_spec",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "abstract_file",
+   "fieldtype": "Attach",
+   "label": "Abstract File"
+  },
+  {
+   "fieldname": "power_of_attorney",
+   "fieldtype": "Attach",
+   "label": "Power of Attorney"
+  },
+  {
+   "depends_on": "eval:doc.application_type=='Industrial Design'",
+   "fieldname": "id_specifics_section",
+   "fieldtype": "Section Break",
+   "label": "Industrial Design Specifics"
+  },
+  {
+   "default": "0",
+   "fieldname": "specimen_submitted",
+   "fieldtype": "Check",
+   "label": "Specimen Submitted?"
+  },
+  {
+   "fieldname": "graphic_representations",
+   "fieldtype": "Attach Image",
+   "label": "Graphic Representations"
+  },
+  {
+   "fieldname": "product_class",
+   "fieldtype": "Data",
+   "label": "Product Class"
+  },
+  {
+   "fieldname": "exam_tab",
+   "fieldtype": "Tab Break",
+   "label": "Examination & Workflow"
+  },
+  {
+   "fieldname": "formal_exam_date",
+   "fieldtype": "Date",
+   "label": "Formal Exam Date"
+  },
+  {
+   "fieldname": "correction_deadline",
+   "fieldtype": "Date",
+   "label": "Correction Deadline"
+  },
+  {
+   "fieldname": "substantive_exam_date",
+   "fieldtype": "Date",
+   "label": "Substantive Exam Date"
+  },
+  {
+   "fieldname": "column_break_exam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "examiner_name",
+   "fieldtype": "Data",
+   "label": "Examiner Name"
+  },
+  {
+   "default": "0",
+   "fieldname": "search_report_recd",
+   "fieldtype": "Check",
+   "label": "Search Report Rec'd"
+  },
+  {
+   "fieldname": "publication_section",
+   "fieldtype": "Section Break",
+   "label": "Publication"
+  },
+  {
+   "fieldname": "publication_date",
+   "fieldtype": "Date",
+   "label": "Publication Date"
+  },
+  {
+   "fieldname": "gazette_reference",
+   "fieldtype": "Data",
+   "label": "Gazette Reference"
+  },
+  {
+   "fieldname": "grant_section",
+   "fieldtype": "Section Break",
+   "label": "Grant"
+  },
+  {
+   "fieldname": "grant_date",
+   "fieldtype": "Date",
+   "label": "Grant Date"
+  },
+  {
+   "fieldname": "patent_duration",
+   "fieldtype": "Int",
+   "label": "Patent Duration (Years)"
+  },
+  {
+   "fieldname": "expiration_date",
+   "fieldtype": "Date",
+   "label": "Expiration Date"
+  },
+  {
+   "fieldname": "fees_tab",
+   "fieldtype": "Tab Break",
+   "label": "Fees & Renewals"
+  },
+  {
+   "default": "0",
+   "fieldname": "filing_fee_paid",
+   "fieldtype": "Check",
+   "label": "Filing Fee Paid?"
+  },
+  {
+   "default": "0",
+   "fieldname": "examination_fee_paid",
+   "fieldtype": "Check",
+   "label": "Examination Fee Paid?"
+  },
+  {
+   "fieldname": "column_break_fees",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "grant_fee_paid",
+   "fieldtype": "Check",
+   "label": "Grant Fee Paid?"
+  },
+  {
+   "fieldname": "annuities_section",
+   "fieldtype": "Section Break",
+   "label": "Annuities"
+  },
+  {
+   "fieldname": "annuity_start_date",
+   "fieldtype": "Date",
+   "label": "Annuity Start Date"
+  },
+  {
+   "fieldname": "renewals",
+   "fieldtype": "Table",
+   "label": "Renewals",
+   "options": "Patent Renewal"
+  },
+  {
+   "fieldname": "legal_tab",
+   "fieldtype": "Tab Break",
+   "label": "Legal Actions"
+  },
+  {
+   "fieldname": "transfer_assignment_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "court_proceedings",
+   "fieldtype": "Text Editor",
+   "label": "Court Proceedings & Legal Notes"
+  },
+  {
+   "fieldname": "recipet",
+   "fieldtype": "Attach",
+   "label": "Receipt"
+  },
+  {
+   "fieldname": "recipet_examination",
+   "fieldtype": "Attach",
+   "label": "Receipt"
+  },
+  {
+   "fieldname": "recipet_grant",
+   "fieldtype": "Attach",
+   "label": "Receipt"
+  }
+ ],
+ "links": [],
+ "modified": "2025-12-19 18:58:58.010732",
+ "modified_by": "Administrator",
+ "module": "IP Management",
+ "name": "Patent Application",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Legal Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

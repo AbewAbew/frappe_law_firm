@@ -1,0 +1,126 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "field:owner_name",
+    "creation": "2024-12-15 13:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "owner_name",
+        "owner_type",
+        "customer_link",
+        "nationality",
+        "full_address",
+        "poa_section",
+        "poa_status",
+        "master_poa",
+        "poa_expiry"
+    ],
+    "fields": [
+        {
+            "fieldname": "owner_name",
+            "fieldtype": "Data",
+            "label": "Owner Name",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "owner_type",
+            "fieldtype": "Select",
+            "label": "Owner Type",
+            "options": "Individual\nCompany\nAssociation",
+            "reqd": 1
+        },
+        {
+            "fieldname": "customer_link",
+            "fieldtype": "Link",
+            "label": "Linked Customer (Billing)",
+            "options": "Customer"
+        },
+        {
+            "fieldname": "nationality",
+            "fieldtype": "Link",
+            "label": "Nationality",
+            "options": "Country",
+            "reqd": 1
+        },
+        {
+            "fieldname": "full_address",
+            "fieldtype": "Small Text",
+            "label": "Full Address",
+            "reqd": 1
+        },
+        {
+            "fieldname": "poa_section",
+            "fieldtype": "Section Break",
+            "label": "Power of Attorney Details"
+        },
+        {
+            "fieldname": "poa_status",
+            "fieldtype": "Select",
+            "label": "POA Status",
+            "options": "Specific (Case by Case)\nGeneral (All Cases)",
+            "reqd": 1
+        },
+        {
+            "depends_on": "eval:doc.poa_status == 'General (All Cases)'",
+            "fieldname": "master_poa",
+            "fieldtype": "Attach",
+            "label": "Master POA"
+        },
+        {
+            "depends_on": "eval:doc.poa_status == 'General (All Cases)'",
+            "fieldname": "poa_expiry",
+            "fieldtype": "Date",
+            "label": "POA Expiry Date"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-12-15 13:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "IP Management",
+    "name": "Trademark Owner",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "IP Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "IP Staff",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}
