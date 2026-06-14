@@ -1,4 +1,20 @@
 frappe.ui.form.on('IP Case', {
+    setup: function (frm) {
+        frm.set_query('currency', function () {
+            return {
+                filters: {
+                    enabled: 1
+                }
+            };
+        });
+    },
+
+    onload: function (frm) {
+        if (frm.is_new() && !frm.doc.currency) {
+            frm.set_value('currency', 'USD');
+        }
+    },
+
     refresh: function (frm) {
         // Trigger visibility logic on load
         frm.trigger('case_type');

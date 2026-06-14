@@ -7,6 +7,19 @@ from frappe.utils import nowdate, add_days, getdate
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.naming import make_autoname
 
+
+DEFAULT_CURRENCY = "USD"
+SUPPORTED_CASE_CURRENCIES = {"USD", "ETB"}
+
+
+def get_case_currency(doc):
+	currency = doc.get("currency") if hasattr(doc, "get") else getattr(doc, "currency", None)
+	if currency in SUPPORTED_CASE_CURRENCIES:
+		return currency
+
+	return DEFAULT_CURRENCY
+
+
 @frappe.whitelist()
 def make_renewal(source_name, target_doc=None):
 	def set_missing_values(source, target):
@@ -14,6 +27,7 @@ def make_renewal(source_name, target_doc=None):
 		target.case_origin = "Internal"
 		target.original_case = source.name
 		target.amended_from = None
+		target.currency = get_case_currency(source)
 
 		# Clear Status / Workflow fields
 		target.case_status = "New"
@@ -63,6 +77,9 @@ class IPCase(Document):
 		# User prompt implies explicit mapping.
 
 		self.name = make_autoname(f"Mla/{code}/.YY./.#####")
+
+	def validate(self):
+		self.currency = get_case_currency(self)
 
 	def on_update(self):
 		if self.has_value_changed("case_status"):
@@ -189,7 +206,7 @@ class IPCase(Document):
 		lb.case_reference = self.name
 		lb.bill_date = nowdate()
 		lb.due_date = nowdate() # Can be adjusted
-		lb.currency = "ETB" # Default, or fetch from customer/settings
+		lb.currency = get_case_currency(self)
 
 		# Add Items
 		for item_data in items_to_add:

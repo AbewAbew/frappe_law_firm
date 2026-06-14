@@ -8,6 +8,7 @@
     "field_order": [
         "case_type",
         "case_origin",
+        "currency",
         "column_break_top",
         "case_status",
         "deadline_summary",
@@ -175,6 +176,15 @@
             "fieldtype": "Select",
             "label": "Case Origin",
             "options": "National\nInternational\nInternal"
+        },
+        {
+            "default": "USD",
+            "fieldname": "currency",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Currency",
+            "options": "Currency",
+            "reqd": 1
         },
         {
             "depends_on": "eval:doc.case_type == 'Recordals'",
@@ -617,7 +627,8 @@
         {
             "fieldname": "payment_amount_etb",
             "fieldtype": "Currency",
-            "label": "Payment Amount (ETB)"
+            "label": "Payment Amount",
+            "options": "currency"
         },
         {
             "fieldname": "payment_date",
@@ -978,7 +989,8 @@
             "depends_on": "eval:doc.case_type == 'Recordals'",
             "fieldname": "official_fee_paid",
             "fieldtype": "Currency",
-            "label": "Official Fee Paid"
+            "label": "Official Fee Paid",
+            "options": "currency"
         },
         {
             "depends_on": "eval:doc.case_type == 'Recordals'",
