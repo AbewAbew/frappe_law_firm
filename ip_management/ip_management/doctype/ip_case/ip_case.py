@@ -63,7 +63,7 @@ def make_renewal(source_name, target_doc=None):
 
 class IPCase(Document):
 	def autoname(self):
-		# TbesT/{Code}/.YY./.#####
+		# TBeST/{Code}/.YY./.#####
 
 		# Map Case Type to Code
 		type_map = {
@@ -76,7 +76,7 @@ class IPCase(Document):
 		code = type_map.get(self.case_type, "NR") # Default to NR if unknown? Or IP? User specified 3 types. I'll default to 'NR' or 'IP' if new types appear.
 		# User prompt implies explicit mapping.
 
-		self.name = make_autoname(f"Mla/{code}/.YY./.#####")
+		self.name = make_autoname(f"TBeST/{code}/.YY./.#####")
 
 	def validate(self):
 		self.currency = get_case_currency(self)
