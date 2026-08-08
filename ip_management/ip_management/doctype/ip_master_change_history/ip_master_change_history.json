@@ -1,0 +1,27 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["recordal_case", "recordal_type", "field_changed", "old_value", "new_value", "changed_on", "changed_by"],
+ "fields": [
+  {"fieldname": "recordal_case", "fieldtype": "Link", "in_list_view": 1, "label": "Recordal Case", "options": "IP Case", "read_only": 1, "reqd": 1},
+  {"fieldname": "recordal_type", "fieldtype": "Data", "in_list_view": 1, "label": "Recordal Type", "read_only": 1},
+  {"fieldname": "field_changed", "fieldtype": "Data", "in_list_view": 1, "label": "Field Changed", "read_only": 1, "reqd": 1},
+  {"fieldname": "old_value", "fieldtype": "Small Text", "label": "Old Value", "read_only": 1},
+  {"fieldname": "new_value", "fieldtype": "Small Text", "label": "New Value", "read_only": 1},
+  {"fieldname": "changed_on", "fieldtype": "Datetime", "in_list_view": 1, "label": "Changed On", "read_only": 1},
+  {"fieldname": "changed_by", "fieldtype": "Link", "label": "Changed By", "options": "User", "read_only": 1}
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-08-08 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "IP Management",
+ "name": "IP Master Change History",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -70,6 +70,10 @@
         "license_expiry_date",
         "quality_control",
         "license_agreement_doc",
+        "merger_section",
+        "merger_successor_owner",
+        "merger_effective_date",
+        "merger_document",
         "change_name_address_section",
         "change_type",
         "new_value",
@@ -93,6 +97,10 @@
         "recordal_registration_date",
         "new_certificate",
         "system_action_update_master",
+        "master_update_applied",
+        "master_updated_on",
+        "master_updated_by",
+        "master_update_summary",
         "recordal_publication_section",
         "publication_date",
         "gazette_reference",
@@ -114,6 +122,7 @@
         "advertisement_date",
         "advertisement_document",
         "create_publication_invoice",
+        "create_renewal_publication_invoice",
         "column_break_advert",
         "opposition_period_start",
         "opposition_period_end",
@@ -153,6 +162,9 @@
         "poa_document",
         "final_status_section",
         "notes",
+        "master_recordal_section",
+        "registered_licenses",
+        "master_change_history",
         "history_section",
         "status_history"
     ],
@@ -376,12 +388,6 @@
             "fieldtype": "Column Break"
         },
         {
-            "fieldname": "next_notification_date",
-            "fieldtype": "Date",
-            "label": "Next Deadline",
-            "read_only": 1
-        },
-        {
             "fetch_from": "applicant.customer_primary_contact",
             "fieldname": "contact_person",
             "fieldtype": "Data",
@@ -565,6 +571,12 @@
             "fieldname": "create_publication_invoice",
             "fieldtype": "Button",
             "label": "Create Publication Invoice"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Trademark Renewal'",
+            "fieldname": "create_renewal_publication_invoice",
+            "fieldtype": "Button",
+            "label": "Create Renewal Publication Invoice"
         },
         {
             "fieldname": "column_break_advert",
@@ -800,6 +812,29 @@
         },
         {
             "collapsible": 1,
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "master_recordal_section",
+            "fieldtype": "Section Break",
+            "label": "Registered Licenses & Recordal History"
+        },
+        {
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "registered_licenses",
+            "fieldtype": "Table",
+            "label": "Registered Licenses",
+            "options": "IP Registered License",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.case_type != 'Recordals'",
+            "fieldname": "master_change_history",
+            "fieldtype": "Table",
+            "label": "Master Recordal History",
+            "options": "IP Master Change History",
+            "read_only": 1
+        },
+        {
+            "collapsible": 1,
             "fieldname": "history_section",
             "fieldtype": "Section Break",
             "label": "Status History"
@@ -899,6 +934,31 @@
             "fieldname": "license_agreement_doc",
             "fieldtype": "Attach",
             "label": "License Agreement"
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.recordal_type == 'Merger'",
+            "fieldname": "merger_section",
+            "fieldtype": "Section Break",
+            "label": "Merger Details"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Merger'",
+            "fieldname": "merger_successor_owner",
+            "fieldtype": "Link",
+            "label": "Successor Owner",
+            "options": "Trademark Owner"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Merger'",
+            "fieldname": "merger_effective_date",
+            "fieldtype": "Date",
+            "label": "Merger Effective Date"
+        },
+        {
+            "depends_on": "eval:doc.recordal_type == 'Merger'",
+            "fieldname": "merger_document",
+            "fieldtype": "Attach",
+            "label": "Merger Document"
         },
         {
             "depends_on": "eval:doc.case_type == 'Recordals' && (doc.recordal_type == 'Change of Name' || doc.recordal_type == 'Change of Address')",
@@ -1024,10 +1084,40 @@
             "label": "New Certificate"
         },
         {
-            "depends_on": "eval:doc.case_type == 'Recordals' && doc.source_origin == 'Internal' && doc.decision_outcome == 'Approved'",
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.source_origin == 'Internal' && doc.decision_outcome == 'Approved' && !doc.master_update_applied",
             "fieldname": "system_action_update_master",
             "fieldtype": "Button",
             "label": "Update Master IP Case"
+        },
+        {
+            "default": "0",
+            "depends_on": "eval:doc.case_type == 'Recordals'",
+            "fieldname": "master_update_applied",
+            "fieldtype": "Check",
+            "label": "Master Update Applied",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.master_update_applied",
+            "fieldname": "master_updated_on",
+            "fieldtype": "Datetime",
+            "label": "Master Updated On",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.master_update_applied",
+            "fieldname": "master_updated_by",
+            "fieldtype": "Link",
+            "label": "Master Updated By",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.case_type == 'Recordals' && doc.master_update_applied",
+            "fieldname": "master_update_summary",
+            "fieldtype": "Small Text",
+            "label": "Master Update Summary",
+            "read_only": 1
         },
         {
             "depends_on": "eval:doc.case_type == 'Recordals'",
@@ -1108,6 +1198,20 @@
             "report": 1,
             "role": "IP Staff",
             "write": 1
+        },
+        {
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Legal Finance"
+        },
+        {
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "HR Manager"
         }
     ],
     "sort_field": "modified",

@@ -13,6 +13,8 @@
   "filing_date",
   "status",
   "naming_series",
+  "status_history_section",
+  "status_history",
   "section_break_1",
   "client",
   "ipc_code",
@@ -124,6 +126,19 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Naming Series"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "status_history_section",
+   "fieldtype": "Section Break",
+   "label": "Status History"
+  },
+  {
+   "fieldname": "status_history",
+   "fieldtype": "Table",
+   "label": "Status History",
+   "options": "Patent Status History",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_1",

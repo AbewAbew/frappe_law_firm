@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.utils import nowdate, add_days, getdate, date_diff
+from frappe.utils import add_days, date_diff, getdate, nowdate
 
 
 def daily():
@@ -133,7 +133,7 @@ def check_renewal_deadlines(months_before=3):
             application_number,
             trademark_name,
             renewal_due_date,
-            firm_name,
+            applicant,
             firm_email
         FROM `tabIP Case`
         WHERE case_type = 'Trademark Renewal'
@@ -154,7 +154,7 @@ def check_renewal_deadlines(months_before=3):
             ip_case=case.name,
             subject=f"Renewal Due in {days_until_due} days: {case.trademark_name} ({case.application_number or case.name})",
             due_date=case.renewal_due_date,
-            description=f"Trademark renewal is due. Contact firm: {case.firm_name or 'N/A'} ({case.firm_email or 'N/A'})"
+            description=f"Trademark renewal is due. Contact firm: {case.applicant or 'N/A'} ({case.firm_email or 'N/A'})"
         )
 
 

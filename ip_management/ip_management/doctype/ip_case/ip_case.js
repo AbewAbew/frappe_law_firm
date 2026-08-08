@@ -1,3 +1,16 @@
+const IP_INVOICE_CREATOR_ROLES = ['IP Manager', 'System Manager'];
+const IP_MASTER_UPDATE_ROLES = ['IP Manager', 'System Manager'];
+
+function can_create_ip_invoice() {
+    return frappe.session.user === 'Administrator'
+        || IP_INVOICE_CREATOR_ROLES.some(role => frappe.user_roles.includes(role));
+}
+
+function can_update_ip_master() {
+    return frappe.session.user === 'Administrator'
+        || IP_MASTER_UPDATE_ROLES.some(role => frappe.user_roles.includes(role));
+}
+
 frappe.ui.form.on('IP Case', {
     setup: function (frm) {
         frm.set_query('currency', function () {
@@ -67,6 +80,7 @@ frappe.ui.form.on('IP Case', {
         const is_renewal = frm.doc.case_type === 'Trademark Renewal';
         const is_recordal = frm.doc.case_type === 'Recordals';
         const is_dispute = frm.doc.case_type === 'Disputes & Surrenders';
+        const can_create_invoice = can_create_ip_invoice();
 
         // Common Toggle: Description of Goods, Transliteration, Color, Priority are NOT for Recordals
         // (Removing fields as per request for Recordals)
@@ -127,6 +141,8 @@ frappe.ui.form.on('IP Case', {
 
             // Hide Invoice buttons for renewals
             frm.toggle_display('create_filing_invoice', false);
+            frm.toggle_display('create_publication_invoice', false);
+            frm.toggle_display('create_renewal_publication_invoice', can_create_invoice);
             frm.toggle_display('create_certificate_invoice', false);
 
             // 2. Lock Trademark Details if Internal Renewal
@@ -161,8 +177,10 @@ frappe.ui.form.on('IP Case', {
             frm.set_df_property('current_expiration_date', 'hidden', 1);
 
             // Show Invoice buttons for non-renewals
-            frm.toggle_display('create_filing_invoice', true);
-            frm.toggle_display('create_certificate_invoice', true);
+            frm.toggle_display('create_filing_invoice', can_create_invoice);
+            frm.toggle_display('create_publication_invoice', can_create_invoice);
+            frm.toggle_display('create_renewal_publication_invoice', false);
+            frm.toggle_display('create_certificate_invoice', can_create_invoice);
 
             frm.set_df_property('trademark_details_section', 'read_only', 0);
             frm.set_df_property('trademark_name', 'read_only', 0);
@@ -175,7 +193,8 @@ frappe.ui.form.on('IP Case', {
 
         } else if (is_dispute) {
             frm.toggle_display('create_filing_invoice', false);
-            frm.toggle_display('create_publication_invoice', true);
+            frm.toggle_display('create_publication_invoice', can_create_invoice);
+            frm.toggle_display('create_renewal_publication_invoice', false);
             frm.toggle_display('create_certificate_invoice', false);
 
             // Hide Opposition Period fields, keep Advertisement Date/Upload
@@ -228,6 +247,12 @@ frappe.ui.form.on('IP Case', {
         fields_to_lock.forEach(field => {
             frm.set_df_property(field, 'read_only', is_internal ? 1 : 0);
         });
+
+        frm.trigger('recordal_type');
+    },
+
+    decision_outcome: function (frm) {
+        frm.trigger('recordal_type');
     },
 
     recordal_type: function (frm) {
@@ -238,6 +263,7 @@ frappe.ui.form.on('IP Case', {
         // Others: Show Publication Section. Publication Invoice visible.
 
         let is_change_address = frm.doc.recordal_type === 'Change of Address';
+        const can_create_invoice = can_create_ip_invoice();
 
         // Toggle Publication Section
         frm.toggle_display('recordal_publication_section', !is_change_address);
@@ -263,16 +289,23 @@ frappe.ui.form.on('IP Case', {
         // Does Group A need Filing Invoice? User didn't explicitly ask for it, but "New Trademark has three"...
         // I will follow specific instruction: "create an invoice button on the Publication... if... [Group A]"
 
-        frm.toggle_display('create_recordal_publication_invoice', !is_change_address);
-        frm.toggle_display('create_recordal_filing_invoice', is_change_address);
+        frm.toggle_display('create_recordal_publication_invoice', can_create_invoice && !is_change_address);
+        frm.toggle_display('create_recordal_filing_invoice', can_create_invoice && is_change_address);
+        frm.toggle_display(
+            'system_action_update_master',
+            can_update_ip_master()
+                && frm.doc.source_origin === 'Internal'
+                && frm.doc.decision_outcome === 'Approved'
+                && !frm.doc.master_update_applied
+        );
     },
 
     create_recordal_filing_invoice: function (frm) {
-        frm.events.create_legal_bill(frm, "Recordal Filing");
+        frm.events.create_invoice(frm, "Recordal Filing");
     },
 
     create_recordal_publication_invoice: function (frm) {
-        frm.events.create_legal_bill(frm, "Recordal Publication");
+        frm.events.create_invoice(frm, "Recordal Publication");
     },
 
     linked_ip_case: function (frm) {
@@ -303,7 +336,8 @@ frappe.ui.form.on('IP Case', {
                     freeze: true,
                     callback: function (r) {
                         if (!r.exc) {
-                            frappe.msgprint('Master IP Case Updated Successfully');
+                            frappe.msgprint(r.message || __('Master IP Case Updated Successfully'));
+                            frm.reload_doc();
                         }
                     }
                 });
