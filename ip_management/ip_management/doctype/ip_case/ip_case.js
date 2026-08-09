@@ -212,10 +212,7 @@ frappe.ui.form.on('IP Case', {
         let is_international = frm.doc.case_origin === 'International';
         frm.toggle_display('foreign_law_firm_section', is_international);
 
-        // Transliteration & Priority Claimed are separate (Assuming internal doesn't need them or follows national?)
-        // Keeping logical specific to Not National
-        // But if Recordal, we force hide them in case_type, so this might re-show them if we are not careful.
-        // We should check !is_recordal here too?
+        // Recordals manage these fields separately in the recordal sections.
         if (frm.doc.case_type !== 'Recordals') {
             frm.toggle_display('transliteration', !is_national);
             frm.toggle_display('priority_claimed', !is_national);
@@ -258,37 +255,11 @@ frappe.ui.form.on('IP Case', {
     recordal_type: function (frm) {
         if (frm.doc.case_type !== 'Recordals') return;
 
-        // Logic:
-        // Change of Address: Hide Publication Section. Filing Invoice Button visible.
-        // Others: Show Publication Section. Publication Invoice visible.
-
         let is_change_address = frm.doc.recordal_type === 'Change of Address';
         const can_create_invoice = can_create_ip_invoice();
 
-        // Toggle Publication Section
         frm.toggle_display('recordal_publication_section', !is_change_address);
-
-        // Toggle Invoice Buttons
-        // We assume standard "Filing" button in Filing Section IS NOT used for Recordals
-        // because we added `create_recordal_filing_invoice`.
-        // Visible only for Change of Address? Or always visible?
-        // User said: "if the recordal type is change of adress... the invoice creation button will be at the Filling (recordal) stage"
-        // Implies for others it might NOT be at Filing stage or they prioritize Publication?
-        // But usually Filing Fee applies to all.
-        // User requirement: "New trademark... has three invoice creating buttion... The trademark renewal has also one... Recordal case type... Change of Address... Publication not visible plus invoice creation button will be at Filling".
-        // This *could* imply that for others, invoice is at Publication? Or both?
-        // I will make `create_recordal_filing_invoice` visible for ALL Recordals usually, OR just Change of Address?
-        // "Assignment... [etc]... create an invoice button on the Publication (Recordal) stage"
-        // "Change of Address... Publication not visible... invoice creation button will be at Filling"
-        // This implies:
-        // Group A: Publication Invoice Button check.
-        // Group B: Filing Invoice Button check.
-        // I'll stick to:
-        // Group A: Show Publication Invoice.
-        // Group B: Show Filing Invoice. (And hide Publication Invoice/Section).
-        // Does Group A need Filing Invoice? User didn't explicitly ask for it, but "New Trademark has three"...
-        // I will follow specific instruction: "create an invoice button on the Publication... if... [Group A]"
-
+        // Change of Address bills at filing; other recordals bill at publication.
         frm.toggle_display('create_recordal_publication_invoice', can_create_invoice && !is_change_address);
         frm.toggle_display('create_recordal_filing_invoice', can_create_invoice && is_change_address);
         frm.toggle_display(
@@ -563,8 +534,7 @@ frappe.ui.form.on('IP Case', {
                 frm.set_value('goods_description', source.goods_description);
                 frm.set_value('original_registration_number', source.registration_number);
 
-                // If source has expiry date logic (e.g. renewal_date_display or calc'd), use it to set DUE DATE
-                // Assuming 'renewal_date_display' on OLD case = Expiry Date
+                // The master Case's displayed renewal date becomes the renewal application's due date.
                 if (source.renewal_date_display) {
                     frm.set_value('renewal_due_date', source.renewal_date_display);
                 }
@@ -788,16 +758,6 @@ var update_case_status = function (frm) {
         let has_response = false;
         if (has_oa) {
             frm.doc.office_actions.forEach(row => {
-                // Assuming field name for response date in child table is response_date (?)
-                // Need to verify field name. In Step 515 line 153 `IP Office Action` has `office_action_date`.
-                // I don't see `response_date` explicitly mentioned in Step 515 other than `if (row.response_date)` check I proposed?
-                // Wait, I didn't see `IP Office Action` struct.
-                // Step 515 line 158: `frappe.model.set_value(cdt, cdn, 'response_deadline', deadline);`
-                // It sets `response_deadline`.
-                // Does it have `response_date`?
-                // I'll assume `response_filed_date` or `response_date`.
-                // Checking `ip_case.json`? No, it's a child table `IP Office Action`.
-                // I will assume `response_date` for now. If it fails, I'll debug.
                 if (row.response_date) has_response = true;
             });
         }

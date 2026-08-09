@@ -128,11 +128,7 @@ class PatentApplication(Document):
 			frappe.throw("Claims File is required before changing status to Filed.")
 		if self.agent_lawyer and not self.power_of_attorney:
 			frappe.throw("Power of Attorney is required when an Agent is selected.")
-		# Check Assignment if Applicant is not Inventor?
-		# Logic: If not applicant_is_inventor, imply assignment is needed.
-		# But we don't have a specific field for 'Assignment Statement', maybe check 'court_proceedings' or add a field.
-		# The prompt mentioned: "Check: If Applicant != Inventor, is Assignment Statement attached?"
-		# We don't have an 'assignment_statement' file field. I'll skip this strict check or warn.
+		# Assignment evidence requirements remain deferred pending the firm's IP counsel decision.
 
 	def calculate_deadlines(self):
 		if self.filing_date:

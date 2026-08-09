@@ -5,7 +5,7 @@
    "label": "Trademark Cases"
   }
  ],
- "content": "[{\"id\":\"header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">IP Management</span>\",\"col\":12}},{\"id\":\"shortcut_cases\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"IP Cases\",\"col\":3}},{\"id\":\"shortcut_tasks\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"IP Tasks\",\"col\":3}},{\"id\":\"shortcut_status\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Case Statuses\",\"col\":3}},{\"id\":\"Gl3aSLhSLP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Patent Application\",\"col\":3}},{\"id\":\"57eVzvPLe1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Trademark Cases\",\"col\":12}}]",
+ "content": "[{\"id\":\"header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">IP Management</span>\",\"col\":12}},{\"id\":\"shortcut_cases\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"IP Cases\",\"col\":3}},{\"id\":\"shortcut_status\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Case Statuses\",\"col\":3}},{\"id\":\"Gl3aSLhSLP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Patent Application\",\"col\":3}},{\"id\":\"userManual\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"User Manual\",\"col\":3}},{\"id\":\"57eVzvPLe1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Trademark Cases\",\"col\":12}}]",
  "creation": "2025-11-22 13:35:00",
  "custom_blocks": [],
  "docstatus": 0,
@@ -18,7 +18,7 @@
  "is_hidden": 0,
  "label": "IP Management",
  "links": [],
- "modified": "2025-12-23 19:52:24.664446",
+ "modified": "2026-08-09 12:15:00.000000",
  "modified_by": "Administrator",
  "module": "IP Management",
  "name": "IP Management",
@@ -41,6 +41,12 @@
  "sequence_id": 3.0,
  "shortcuts": [
   {
+   "color": "Blue",
+   "label": "User Manual",
+   "type": "URL",
+   "url": "/tbest-manual"
+  },
+  {
    "color": "Grey",
    "doc_view": "List",
    "label": "Patent Application",
@@ -53,14 +59,6 @@
    "doc_view": "List",
    "label": "IP Cases",
    "link_to": "IP Case",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Orange",
-   "doc_view": "List",
-   "label": "IP Tasks",
-   "link_to": "IP Task",
    "stats_filter": "[]",
    "type": "DocType"
   },

@@ -5,7 +5,16 @@ import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.naming import make_autoname
-from frappe.utils import add_days, add_months, flt, getdate, now_datetime, nowdate
+from frappe.utils import (
+	add_days,
+	add_months,
+	escape_html,
+	flt,
+	getdate,
+	now_datetime,
+	nowdate,
+	validate_email_address,
+)
 from law_management.law_management.doctype.legal_bill.legal_bill import (
 	build_billing_source_key,
 	ensure_billing_source_is_available,
@@ -16,6 +25,23 @@ DEFAULT_CURRENCY = "USD"
 SUPPORTED_CASE_CURRENCIES = {"USD", "ETB"}
 IP_INVOICE_CREATOR_ROLES = {"IP Manager", "System Manager"}
 IP_MASTER_UPDATE_ROLES = {"IP Manager", "System Manager"}
+IP_CASE_DEADLINE_REMINDERS = (
+	("priority_document_deadline", "Priority Document Deadline", (7, 1, 0)),
+	("registration_fee_deadline", "Registration Fee Deadline", (7, 1, 0)),
+	("non_use_cancellation_date", "Non-Use Vulnerability Date", (7, 1, 0)),
+	("renewal_date_display", "Renewal Date", (7, 1, 0)),
+	("opposition_period_end", "Opposition Period End", (7, 1, 0)),
+	("opposition_deadline_extended", "Extended Opposition Deadline", (7, 1, 0)),
+	("registration_fee_due_date", "Registration Fee Due", (14,)),
+	("renewal_due_date", "Trademark Renewal Due", (90,)),
+)
+REMINDER_SUBJECTS = {
+	90: "Upcoming Deadline (Approximately 3 Months)",
+	14: "Upcoming Deadline (2 Weeks)",
+	7: "Upcoming Deadline (1 Week)",
+	1: "Urgent Deadline (Tomorrow)",
+	0: "Deadline Today",
+}
 IP_BILLING_STAGES = {
 	"Filing": {
 		"items": (
@@ -378,8 +404,8 @@ class IPCase(Document):
 			"Disputes & Surrenders": "DS"
 		}
 
-		code = type_map.get(self.case_type, "NR") # Default to NR if unknown? Or IP? User specified 3 types. I'll default to 'NR' or 'IP' if new types appear.
-		# User prompt implies explicit mapping.
+		# Case Type is required and constrained by the DocType options; NR preserves legacy fallback behavior.
+		code = type_map.get(self.case_type, "NR")
 
 		self.name = make_autoname(f"TBeST/{code}/.YY./.#####")
 
@@ -453,33 +479,18 @@ class IPCase(Document):
 			row.qty = 1
 			row.rate = standard_rate
 			row.amount = row.qty * row.rate
-
-
 		lb.insert()
 
-		# --- Attachment Logic ---
-		# Link the file to the Legal Bill
-		# Legal Bill has `invoice_file` (Attach) for the MAIN bill file usually, but we can also stick the proof there?
-		# Or generic attachment.
-		# User Request: "New legal bill(fees) doctype... attach this attachement docuents to the new legal bill we create too."
-		# I will attach to `invoice_file` if empty, or just add as attachment.
-
+		# Preserve stage evidence as a standard attachment; invoice_file remains reserved for the invoice PDF.
 		if attachment_field:
 			file_url = self.get(attachment_field)
 			if file_url:
-				# 1. Set as 'invoice_file' if it serves as the supporting doc?
-				# Maybe not, invoice_file is usually the generated invoice PDF.
-				# I will create a File attachment linked to the Legal Bill.
-
 				file_doc = frappe.new_doc("File")
 				file_doc.file_url = file_url
 				file_doc.file_name = file_url.split("/")[-1]
 				file_doc.attached_to_doctype = "Legal Bill"
 				file_doc.attached_to_name = lb.name
 				file_doc.save(ignore_permissions=True)
-
-				# Optional: If Legal Bill has a dedicated field for "Supporting Doc", map it.
-				# But for now, standard attachment.
 
 		return lb.name
 
@@ -561,64 +572,158 @@ def get_agents(doctype, txt, searchfield, start, page_len, filters):
 	})
 
 def daily_deadline_check():
-	# Deadlines to check and their labels
-	# (Field Name, Friendly Name)
-	deadlines_to_check = [
-		("priority_document_deadline", "Priority Document Deadline"),
-		("registration_fee_deadline", "Registration Fee Deadline"),
-		("non_use_cancellation_date", "Non-Use Vulnerability Date"),
-		("renewal_date_display", "Renewal Date"),
-		("opposition_period_end", "Opposition Period End"),
-		("opposition_deadline_extended", "Extended Opposition Deadline")
-	]
+	deadline_fields = [fieldname for fieldname, _label, _days in IP_CASE_DEADLINE_REMINDERS]
+	cases = frappe.get_all(
+		"IP Case",
+		filters={"case_status": ["!=", "Cancelled"]},
+		fields=[
+			"name",
+			"trademark_name",
+			"application_number",
+			"local_agent",
+			"applicant",
+			"firm_email",
+			"case_type",
+			"advertisement_published",
+			"opposition_filed",
+			"payment_date",
+			"reminder_needed",
+			"renewal_filed_date",
+			*deadline_fields,
+		],
+	)
 
-	# Get all active cases
-	# We exclude Cancelled. We might exclude Registered for some, but Renewal applies to Registered.
-	cases = frappe.get_all("IP Case", filters={"case_status": ["!=", "Cancelled"]}, fields=["name", "trademark_name", "local_agent_email"] + [d[0] for d in deadlines_to_check])
-
-	today = frappe.utils.getdate(nowdate())
+	today = getdate(nowdate())
 
 	for case in cases:
-		if not case.local_agent_email:
+		case.case_lead_email = get_case_lead_email(case.local_agent)
+		if not case.case_lead_email:
 			continue
 
-		# Check standard fields
-		for field, label in deadlines_to_check:
-			date_val = case.get(field)
-			if date_val:
-				match_deadline(case, label, date_val, today)
+		for fieldname, label, reminder_days in IP_CASE_DEADLINE_REMINDERS:
+			date_value = case.get(fieldname)
+			if date_value and should_send_case_deadline(case, fieldname):
+				match_deadline(
+					case,
+					label,
+					date_value,
+					today,
+					reminder_days,
+					get_deadline_guidance(case, fieldname),
+				)
 
-		# Check Office Actions (Child Table)
-		oas = frappe.get_all("IP Office Action", filters={"parent": case.name}, fields=["office_action_date", "response_deadline", "response_date"])
-		for oa in oas:
-			if oa.response_deadline and not oa.response_date:
-				match_deadline(case, f"Office Action Response ({oa.office_action_date})", oa.response_deadline, today)
+		office_actions = frappe.get_all(
+			"IP Office Action",
+			filters={"parent": case.name},
+			fields=[
+				"office_action_date",
+				"action_type",
+				"response_deadline",
+				"response_filed",
+				"response_date",
+			],
+		)
+		for action in office_actions:
+			if action.response_deadline and not action.response_filed and not action.response_date:
+				match_deadline(
+					case,
+					f"Office Action Response ({action.office_action_date})",
+					action.response_deadline,
+					today,
+					(7, 1, 0),
+					f"Response deadline for office action ({action.action_type or 'N/A'}) is approaching.",
+				)
 
-def match_deadline(case, label, target_date, today):
-	# Ensure target_date is date obj
-	target_date = frappe.utils.getdate(target_date)
+
+def get_case_lead_email(case_lead):
+	if not case_lead or case_lead in {"Administrator", "Guest"}:
+		return None
+
+	email = frappe.db.get_value(
+		"User",
+		{"name": case_lead, "enabled": 1, "user_type": "System User"},
+		"email",
+	)
+	email = (email or "").strip()
+	return email if email and validate_email_address(email, throw=False) else None
+
+
+def should_send_case_deadline(case, fieldname):
+	if fieldname in {"registration_fee_due_date", "registration_fee_deadline"}:
+		return not case.payment_date
+	if fieldname == "opposition_period_end":
+		return bool(case.advertisement_published) and not case.opposition_filed
+	if fieldname == "renewal_due_date":
+		return (
+			case.case_type == "Trademark Renewal"
+			and bool(case.reminder_needed)
+			and not case.renewal_filed_date
+		)
+	return True
+
+
+def get_deadline_guidance(case, fieldname):
+	if fieldname == "opposition_period_end":
+		return "The opposition period is ending soon. If no opposition is filed, proceed to registration."
+	if fieldname == "registration_fee_due_date":
+		return "Registration fee payment is due. Please process payment to EIPA."
+	if fieldname == "renewal_due_date":
+		return f"Contact firm/payer: {case.applicant or 'N/A'} ({case.firm_email or 'N/A'})."
+	return ""
+
+
+def match_deadline(case, label, target_date, today, reminder_days=(7, 1, 0), details=""):
+	target_date = getdate(target_date)
 	diff = (target_date - today).days
+	if diff not in reminder_days:
+		return
 
-	msg = None
-	if diff == 7:
-		msg = f"Upcoming Deadline (1 Week): {label}"
-	elif diff == 1:
-		msg = f"Urgent Deadline (Tomorrow): {label}"
-	elif diff == 0:
-		msg = f"Deadline Today: {label}"
+	send_deadline_email(
+		case,
+		f"{REMINDER_SUBJECTS[diff]}: {label}",
+		label,
+		target_date,
+		diff,
+		details,
+	)
 
-	if msg:
-		send_deadline_email(case, msg, label, target_date)
 
-def send_deadline_email(case, subject, label, date):
+def send_deadline_email(case, subject, label, date, days_remaining, details=""):
+	case_title = case.trademark_name or case.name
+	case_reference = case.application_number or case.name
+	full_subject = f"{subject} - {case_title} ({case_reference})"
+	if deadline_email_already_queued(case.name, full_subject):
+		return
+
+	remaining_text = "today" if days_remaining == 0 else f"in {days_remaining} day(s)"
+	details_html = f"<p>{escape_html(details)}</p>" if details else ""
 	frappe.sendmail(
-		recipients=[case.local_agent_email],
-		subject=f"{subject} - {case.trademark_name} ({case.name})",
+		recipients=[case.case_lead_email],
+		subject=full_subject,
 		message=f"""
 			<h3>Deadline Alert</h3>
-			<p><b>Case:</b> {case.trademark_name} ({case.name})</p>
-			<p><b>Deadline:</b> {label}</p>
-			<p><b>Date:</b> {date}</p>
+			<p><b>Case:</b> {escape_html(case_title)} ({escape_html(case.name)})</p>
+			<p><b>Deadline:</b> {escape_html(label)}</p>
+			<p><b>Date:</b> {escape_html(str(date))}</p>
+			<p>This deadline is due {remaining_text}.</p>
+			{details_html}
 			<p>Please take necessary action.</p>
-		"""
+			<p><a href="/app/ip-case/{case.name}">View IP Case</a></p>
+		""",
+		reference_doctype="IP Case",
+		reference_name=case.name,
+	)
+
+
+def deadline_email_already_queued(case_name, subject):
+	return bool(
+		frappe.db.exists(
+			"Email Queue",
+			{
+				"reference_doctype": "IP Case",
+				"reference_name": case_name,
+				"subject": subject,
+				"creation": [">=", nowdate()],
+			},
+		)
 	)

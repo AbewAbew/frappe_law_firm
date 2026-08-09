@@ -150,7 +150,6 @@ add_to_apps_screen = [
 
 scheduler_events = {
 	"daily": [
-		"ip_management.tasks.daily",
 		"ip_management.ip_management.doctype.ip_case.ip_case.daily_deadline_check"
 	],
 }

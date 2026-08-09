@@ -2,14 +2,14 @@
 
 ## Current Process
 
-IP work is managed through IP Cases, dated stage fields, IP Tasks, Trademark Owners, Patent Applications, and Legal Bills. The former IP Request Type and IP Workflow Rule masters have been retired because the firm does not use a configurable status-rule process.
+IP work is managed through IP Cases, dated stage fields, Trademark Owners, Patent Applications, and Legal Bills. IP Task, IP Request Type, and IP Workflow Rule have been retired because the firm uses each IP Case as the single operational record.
 
 ## Roles
 
 | Role | Main access |
 |---|---|
-| IP Manager | Manages IP Cases and IP Tasks; creates draft IP invoices |
-| IP Staff | Works on IP Cases and IP Tasks; cannot create IP invoices |
+| IP Manager | Manages IP Cases; creates draft IP invoices |
+| IP Staff | Works on IP Cases; cannot create IP invoices |
 | Legal Finance | Reads linked IP Cases and completes Legal Bills |
 | HR Manager | Same IP billing-review access as Legal Finance |
 | System Manager | Full configuration and troubleshooting access |
@@ -18,12 +18,13 @@ IP work is managed through IP Cases, dated stage fields, IP Tasks, Trademark Own
 
 Create an IP Case using the correct Case Type: New Trademark, Trademark Renewal, Recordals, or Disputes & Surrenders. Enter the actual filing, advertisement, opposition, registration, office-action, and renewal dates as the matter progresses.
 
-The form calculates the related deadline fields and displays them in the deadline dashboard. Daily scheduled jobs use those stored dates to:
+The form calculates the related deadline fields and displays them in the deadline dashboard. The daily scheduled job uses those stored dates to send Case-linked emails:
 
-- create IP Tasks for approaching office actions, opposition periods, registration fees, and renewals;
-- send deadline emails seven days before, one day before, and on selected due dates.
+- 90 days before a pending Trademark Renewal Due Date;
+- 14 days before an unpaid Registration Fee Due Date;
+- seven days before, one day before, and on the due date for the standard IP and Office Action deadlines.
 
-Status changes continue to create status-history rows, but they do not create rule-based deadlines or tasks.
+Status changes continue to create status-history rows, but they do not create separate rule-based deadlines or tasks.
 
 ## Patent Applications
 
@@ -43,5 +44,5 @@ The bill inherits the IP Case payer and currency. Supporting stage documents are
 2. Confirm Case Lead Email is populated for deadline emails.
 3. Configure all IP Legal Service Item rates before billing.
 4. Test each billing stage with IP Manager, IP Staff, and Legal Finance accounts.
-5. Review open IP Tasks and close completed reminders.
-6. Do not recreate IP Request Type or IP Workflow Rule; they are not part of the current process.
+5. Confirm completed stages have their dates, checkboxes, and supporting evidence updated on the IP Case.
+6. Do not recreate IP Task, IP Request Type, or IP Workflow Rule; they are not part of the current process.
